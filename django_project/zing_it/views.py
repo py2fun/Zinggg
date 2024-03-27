@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import Http404
 from django.contrib.auth.models import User
+from django.contrib.auth import authenticate
 
 from .forms import Signup,Login
 
@@ -62,11 +63,9 @@ def signup(request):
         confirm_password = form.cleaned_data.get("confirm_password")
         name = form.cleaned_data.get("full_name")
         email = form.cleaned_data.get("email")
-        print(email)
         if(password!= confirm_password):
             return render(request,'zing_it/signup.html',{"form":form,"status":"Your passwords don't match!"})
         else:
-            print("this is:",email)
             try:
                 user= User.objects.get(email=email)
                 return render(request,'zing_it/signup.html',{"form":form,"status":"This email already exists in the system! Please log in instead."})
@@ -81,13 +80,13 @@ def login(request):
     form = Login(request.POST or None)
     status= " "
     if form.is_valid():
-        email = form.cleaned_data.get("email")
+        username = form.cleaned_data.get("username")
         password = form.cleaned_data.get("password")
-        user = next((user for user in users if user["email"] == email and user["password"] == password), None)
+        user = authenticate(username=username, password=password)
         if user:
-            status="Successfully logged in!"
+            status="You have successfully logged in!"
         else:
-            status="Wrong Credentials!"
+            status="You credentials are not valid. Try again!"
     return render(request,'zing_it/login.html',{"form":form,"status":status})
 
     
