@@ -2,30 +2,25 @@
 {% load static %}
 <html >
 <head>
-    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href= "{% static 'zing_it/css/mystyle.css' %}"/>
     <title>Home Page</title>
 </head>
 <body>
-    <h1><center>Zing It</center></h1>
-    <table>
-        <tr>
-          <th>id</th>
-          <th>Track</th>
-          <th>Artist</th>
-          <th>Album</th>
-          <th>Length</th>
-        </tr>
-        {% for song in songs  %}
-        <tr>
-          <td>{{ song.id }}</td>
-          <td>{{ song.Track }}</td>
-          <td>{{ song.Artist }}</td>
-          <td>{{ song.Album }}</td>
-          <td>{{ song.Length }}</td>
-        </tr>
-        {% endfor %}
-      </table>
+  <h1><center>Zing It</center></h1>
+
+  
+  <div class="row">
+    {% for music in music_types %}
+    <div class="column">
+      <div class="card">
+        <h3>{{music}}</h3>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
     
+    </div>
+  </div>
 </body>
 </html>
