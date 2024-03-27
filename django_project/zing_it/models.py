@@ -4,15 +4,13 @@ from django.db import models
 
 class Song(models.Model):
     track = models.CharField(max_length=50)
-    artist = models.CharField(max_length=50)
+    artist = models.CharField(max_length=50, unique= True)
     album = models.CharField(max_length=70)
-    lyrics = models.TextField(max_length=1000)
     length = models.TimeField()
+    playlist_name = models.ManyToManyField('Playlist')
 
 class Playlist(models.Model):
-    name= models.CharField(max_length=70)
-    description= models.CharField(max_length=150)
-    date_created= models.DateTimeField(auto_now_add=True)
+    wasif= models.CharField(max_length=70, unique= True)
     number_of_songs=models.IntegerField()
     
 

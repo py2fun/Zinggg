@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import Http404
 
+from .forms import Signup
+
 # Create your views here.
 
 music_types=[
@@ -13,8 +15,8 @@ my_songs = [
             {"id": 2, "Track": "大酒窝", "Artist": "蔡俊杰, 林卓妍", "Album": "JJ陆", "Length": "3:34","playlist_id": 1},
             {"id": 3, "Track": "Better Now", "Artist": "Post Malone", "Album": "beerbongs & bentleys", "Length": "3:51","playlist_id": 1},
             {"id": 4, "Track": "第一次", "Artist": "光优", "Album": "第一次个人创作专辑", "Length": "3:04","playlist_id": 1},
-            {"id": 5, "Track": "冰雨", "Artist": "德华", "Album": "Pop", "Length": "3:21","playlist_id": 1},
-            {"id": 6, "Track": "一起长大的约定", "Artist": "周伦", "Album": "我很忙", "Length": "3:14","playlist_id": 1},
+            {"id": 5, "Track": "冰雨", "Artist": "德华", "Album": "Pop", "Length": "3:21","playlist_id": 2},
+            {"id": 6, "Track": "一起长大的约定", "Artist": "周伦", "Album": "我很忙", "Length": "3:14","playlist_id": 2},
         ]
 
 my_playlists=[
@@ -48,4 +50,15 @@ def playlist(request,id):
         
     return render(request,'zing_it/songs.html',{"songs":songs,"playlist_name": playlist_name})
     
+def signup(request):
+    form = Signup(request.POST or None)
+    status= " "
+    if form.is_valid():
+        password= form.cleaned_data.get("password")
+        confirm_password = form.cleaned_data.get("confirm_password")
+        if(password!= confirm_password):
+            status= "Your passwords don't match!"
+        else:
+            status= "Signup done successfully!"
+    return render(request,'zing_it/signup.html',{"form":form,"status":status})
     
