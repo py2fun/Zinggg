@@ -12,11 +12,13 @@
   
   <div class="row">
     {% for music in music_types %}
-    <div class="column">
-      <div class="card">
-        <h3>{{music}}</h3>
+    <a href= "{% url 'music' id=music.id %}">
+      <div class="column">
+        <div class="card">
+          <h3>{{music.name}}</h3>
+        </div>
       </div>
-    </div>
+    </a>
     {% endfor %}
   </div>
     
