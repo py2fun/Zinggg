@@ -13,6 +13,8 @@ class Playlist(models.Model):
     name= models.CharField(max_length=70)
     description= models.CharField(max_length=150)
     date_created= models.DateTimeField(auto_now_add=True)
+    number_of_songs=models.IntegerField()
+    
 
 
 
