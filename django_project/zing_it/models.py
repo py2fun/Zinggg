@@ -9,9 +9,15 @@ class Song(models.Model):
     length = models.TimeField()
     playlist_name = models.ManyToManyField('Playlist')
 
+    def __str__(self):
+        return str(self.track)
+
 class Playlist(models.Model):
-    wasif= models.CharField(max_length=70, unique= True)
+    name = models.CharField(max_length=70, unique= True)
     number_of_songs=models.IntegerField()
+
+    def __str__(self):
+        return str(self.name)
     
 
 

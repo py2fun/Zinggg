@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import Http404
+from django.contrib.auth.models import User
 
 from .forms import Signup,Login
 
@@ -53,18 +54,28 @@ def playlist(request,id):
             songs.append(song)
         
     return render(request,'zing_it/songs.html',{"songs":songs,"playlist_name": playlist_name})
-    
+
 def signup(request):
     form = Signup(request.POST or None)
-    status= " "
     if form.is_valid():
         password= form.cleaned_data.get("password")
         confirm_password = form.cleaned_data.get("confirm_password")
+        name = form.cleaned_data.get("full_name")
+        email = form.cleaned_data.get("email")
+        print(email)
         if(password!= confirm_password):
-            status= "Your passwords don't match!"
+            return render(request,'zing_it/signup.html',{"form":form,"status":"Your passwords don't match!"})
         else:
-            status= "Signup done successfully!"
-    return render(request,'zing_it/signup.html',{"form":form,"status":status})
+            print("this is:",email)
+            try:
+                user= User.objects.get(email=email)
+                return render(request,'zing_it/signup.html',{"form":form,"status":"This email already exists in the system! Please log in instead."})
+            except Exception as e:
+                print(e)
+                new_user = User.objects.create_user(username= name, email= email,password= password)
+                new_user.save()
+                return render(request,'zing_it/signup.html',{"form":form,"status":"Signed up Successfully!"})
+    return render(request,'zing_it/signup.html',{"form":form})
     
 def login(request):
     form = Login(request.POST or None)
